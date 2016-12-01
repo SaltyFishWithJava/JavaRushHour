@@ -5,6 +5,7 @@ public class t {
 		// TODO Auto-generated method stub
 		System.out.println("Hello, Rushhour");
 		System.out.println("我就看看这东西怎么用的");
+		System.out.println("Try import");
 	}
 
 }
