@@ -8,11 +8,14 @@ import java.awt.event.*;
 public class MainFrame extends JFrame{
 
 	public UtilPanel utilp;
+	public FunctionPanel funcp;
 	
 	public MainFrame(){
 		utilp = new UtilPanel();
+		funcp = new FunctionPanel();
 		Container contentPane = getContentPane();
 		contentPane.add(utilp, BorderLayout.SOUTH);
+		contentPane.add(funcp, BorderLayout.EAST);
 		setTitle("Rush Hour!");
 		setLocation(10,30);
 		setSize(950, 700);
