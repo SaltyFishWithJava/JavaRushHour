@@ -30,6 +30,9 @@ public class FunctionPanel extends JPanel{
 		jbgameSave.setEnabled(false);
 		horizontalBoxGame.add(jbgameSave);
 		
+		JSeparator separator = new JSeparator();
+		verticalBoxFunc.add(separator);
+		
 		Box verticalBoxMap = Box.createVerticalBox();
 		verticalBoxFunc.add(verticalBoxMap);
 		
@@ -67,6 +70,9 @@ public class FunctionPanel extends JPanel{
 		
 		JComboBox comboBox = new JComboBox();
 		verticalBoxMap.add(comboBox);
+		
+		JSeparator separator_1 = new JSeparator();
+		verticalBoxFunc.add(separator_1);
 		
 		Box verticalBoxSolver = Box.createVerticalBox();
 		verticalBoxFunc.add(verticalBoxSolver);
@@ -122,19 +128,32 @@ public class FunctionPanel extends JPanel{
 		jbstepbystep.setEnabled(false);
 		horizontalBox_2.add(jbstepbystep);
 		
+		JButton jbPreviousStep = new JButton("Previous Step");
+		jbPreviousStep.setEnabled(false);
+		horizontalBox_2.add(jbPreviousStep);
+		
+		JSeparator separator_2 = new JSeparator();
+		verticalBoxFunc.add(separator_2);
+		
 		Box verticalBox = Box.createVerticalBox();
 		verticalBoxFunc.add(verticalBox);
 		
 		Box horizontalBox_4 = Box.createHorizontalBox();
 		verticalBox.add(horizontalBox_4);
 		
-		JLabel lblPlayWithFriends = new JLabel("Play With Friends");
+		JLabel lblPlayWithFriends = new JLabel("Play With Friends:");
 		lblPlayWithFriends.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPlayWithFriends.setFont(new Font("LiSong Pro", Font.BOLD, 15));
 		horizontalBox_4.add(lblPlayWithFriends);
 		
+		Component horizontalGlue_3 = Box.createHorizontalGlue();
+		horizontalBox_4.add(horizontalGlue_3);
+		
 		JButton btnMultiplayer = new JButton("Multi-Player");
 		horizontalBox_4.add(btnMultiplayer);
+		
+		JButton btnShowFriendsSolution = new JButton("Show Friends Solution");
+		horizontalBox_4.add(btnShowFriendsSolution);
 		
 		JTextPane txtpnLeaderboard = new JTextPane();
 		txtpnLeaderboard.setText("LeaderBoard:");
