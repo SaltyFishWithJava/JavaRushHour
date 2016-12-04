@@ -15,7 +15,7 @@ public class FunctionPanel extends JPanel{
 		Box horizontalBoxGame = Box.createHorizontalBox();
 		verticalBoxFunc.add(horizontalBoxGame);
 		
-		JLabel Labelgame = new JLabel("   Game: ");
+		JLabel Labelgame = new JLabel("Game: ");
 		Labelgame.setFont(new Font("LiSong Pro", Font.BOLD, 15));
 		horizontalBoxGame.add(Labelgame);
 		Labelgame.setHorizontalAlignment(SwingConstants.CENTER);
@@ -36,7 +36,7 @@ public class FunctionPanel extends JPanel{
 		Box horizontalMap = Box.createHorizontalBox();
 		verticalBoxMap.add(horizontalMap);
 		
-		JLabel jlmap = new JLabel("   Maps:");
+		JLabel jlmap = new JLabel("Maps:");
 		jlmap.setHorizontalAlignment(SwingConstants.CENTER);
 		jlmap.setFont(new Font("LiSong Pro", Font.BOLD, 15));
 		horizontalMap.add(jlmap);
@@ -74,7 +74,7 @@ public class FunctionPanel extends JPanel{
 		Box horizontalBox = Box.createHorizontalBox();
 		verticalBoxSolver.add(horizontalBox);
 		
-		JLabel lblSolver = new JLabel("   Solver:");
+		JLabel lblSolver = new JLabel("Solver:");
 		lblSolver.setFont(new Font("LiSong Pro", Font.BOLD, 15));
 		lblSolver.setHorizontalAlignment(SwingConstants.CENTER);
 		horizontalBox.add(lblSolver);
@@ -86,12 +86,15 @@ public class FunctionPanel extends JPanel{
 		verticalBoxSolver.add(horizontalBox_1);
 		
 		JButton jbStartSolver = new JButton("Start Solver");
+		jbStartSolver.setEnabled(false);
 		horizontalBox_1.add(jbStartSolver);
 		
 		JButton jbSaveSolution = new JButton("Save Solutions");
+		jbSaveSolution.setEnabled(false);
 		horizontalBox_1.add(jbSaveSolution);
 		
 		JButton jbHint = new JButton("Hint!");
+		jbHint.setEnabled(false);
 		horizontalBox_1.add(jbHint);
 		
 		Box verticalBox_1 = Box.createVerticalBox();
@@ -101,6 +104,7 @@ public class FunctionPanel extends JPanel{
 		verticalBox_1.add(progressBar);
 		
 		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setEnabled(false);
 		verticalBox_1.add(comboBox_1);
 		
 		JTextPane txtpnSteps = new JTextPane();
@@ -111,9 +115,11 @@ public class FunctionPanel extends JPanel{
 		verticalBoxSolver.add(horizontalBox_2);
 		
 		JButton jbautomove = new JButton("Auto Move");
+		jbautomove.setEnabled(false);
 		horizontalBox_2.add(jbautomove);
 		
 		JButton jbstepbystep = new JButton("Step By Step");
+		jbstepbystep.setEnabled(false);
 		horizontalBox_2.add(jbstepbystep);
 		
 		Box verticalBox = Box.createVerticalBox();

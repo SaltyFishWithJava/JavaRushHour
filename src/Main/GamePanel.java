@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+//大老板！！全村人都靠你了！！
+//Maps and cars are shown here. it should be placed at BorderLayout.CENTER in MainFrame
 
 public class GamePanel extends JPanel{
 
