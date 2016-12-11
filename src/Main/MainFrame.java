@@ -7,18 +7,20 @@ import java.awt.event.*;
 
 public class MainFrame extends JFrame{
 	
-	private int FRAME_WIDTH = 1000;
+	private int FRAME_WIDTH = 1050;
 	private int FRAME_HEIGHT = 700;
 
 	public UtilPanel utilp;
 	public FunctionPanel funcp;
-	
+	private GamePanel carpark;
 	public MainFrame(){
 		utilp = new UtilPanel();
 		funcp = new FunctionPanel();
+		carpark =new GamePanel();
 		Container contentPane = getContentPane();
 		contentPane.add(utilp, BorderLayout.SOUTH);
 		contentPane.add(funcp, BorderLayout.EAST);
+		contentPane.add(carpark);
 		setTitle("Rush Hour!");
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
