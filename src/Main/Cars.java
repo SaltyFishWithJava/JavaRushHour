@@ -13,6 +13,7 @@ public class Cars{
 	final static int maxn=21;
 	static Cars[] allcar=new Cars[maxn];
 	public int length;//车长
+	public int movlength;//扩展车长
 	public int dir;//车的方向
 	public int id;
 	public int co;
@@ -24,6 +25,7 @@ public class Cars{
 	public Cars(int le,int di,int x,int y){
 		image_name=null;
 		length=le;
+		movlength=le;
 		dir=di;
 		pos[0]=x;
 		pos[1]=y;
@@ -49,6 +51,7 @@ public class Cars{
 	}
 	public Cars(){
 		length=0;
+		movlength=0;
 		dir=0;
 		co=0;
 		id=0;
