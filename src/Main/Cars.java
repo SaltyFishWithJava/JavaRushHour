@@ -7,7 +7,7 @@ import java.util.Comparator;;
 
 public class Cars{
 
-    final private int []offsetY={42,45};
+    final private int []offsetY={42,42};
     final private int []offsetX={30,60,2,0};//c2,c3,r2,r3
 	final static int dirC=1,dirR=0;
 	final static int maxn=21;
@@ -56,7 +56,7 @@ public class Cars{
 		co=0;
 		id=0;
 	}
-	public void DrawTheCar(/*int [][]map*/){
+	public void DrawTheCar(){
 			image_name="Images\\car";
 			image_name+=length;
 			if(dir==dirC){
@@ -93,17 +93,4 @@ public class Cars{
 		for_draw[1]=Y;
 		//ÐÞ¸ÄÊý×é
 	}
-}
-
-class CarsComparators implements Comparator<Cars>{
-
-	@Override
-	public int compare(Cars arg0, Cars arg1) {
-		// TODO Auto-generated method stub
-		if(arg0.pos[1]==arg1.pos[1]){
-			return arg0.pos[0]>arg1.pos[0]?1:-1;
-		}
-		return arg0.pos[1]>arg1.pos[1]?1:-1;
-	}
-	
 }

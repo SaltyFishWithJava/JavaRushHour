@@ -15,7 +15,7 @@ public class MainFrame extends JFrame{
 	private int FRAME_HEIGHT = 600;
 
 	private UtilPanel utilp;
-	private GamePanel carpark;
+	public static GamePanel carpark;
 	private MainFrameFuncPanel mffp;
 	//¹¹Ôìº¯Êý
 	public MainFrame(){

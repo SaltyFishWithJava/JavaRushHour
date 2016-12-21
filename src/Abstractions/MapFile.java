@@ -5,7 +5,7 @@ import java.io.*;
 public class MapFile {
 
 	private File file;
-	private String name;
+	public String name;
 	
 	public MapFile(File f) {
 		file = f;
@@ -20,5 +20,9 @@ public class MapFile {
 	
 	public String toString() {
 		return name;
+	}
+	
+	public String getMapName(){
+		return file.getName();
 	}
 }

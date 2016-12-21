@@ -1,8 +1,10 @@
 package Main;
+import Abstractions.MapFile;
+
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.io.*;
 import java.util.regex.Pattern;
 
 import javax.swing.*;
@@ -21,7 +23,7 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 	private JLabel labelleaders;
 	private JButton btnCreateMap;
 	private JButton btnLoadMap;
-	private JComboBox comboBoxMaps;
+	private JComboBox<MapFile> comboBoxMaps;
 	private JButton btnHint;
 	private JButton btnPrevStep;
 	private JButton btnSolve;
@@ -156,6 +158,7 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		comboBoxMaps = new JComboBox();
 		comboBoxMaps.setToolTipText("Files with *puzzles will be shown here.");
 		verticalBox.add(comboBoxMaps);
+	
 		
 		verticalStrut_1 = Box.createVerticalStrut(15);
 		verticalBox.add(verticalStrut_1);
@@ -320,6 +323,54 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			if (Pattern.matches(".*(\\.maps)$", fileName))
 				comboBoxMaps.addItem(new MapFile(file));
 		}
+		comboBoxMaps.addItemListener(new ItemListener() {  
+            @Override  
+            public void itemStateChanged(ItemEvent e) {
+            	MapFile te=(MapFile) comboBoxMaps.getSelectedItem();
+            	System.out.println(((MapFile) comboBoxMaps.getSelectedItem()).getMapName());
+    			String filename=((MapFile) comboBoxMaps.getSelectedItem()).getMapName();
+    			FileReader fi = null;
+				try {
+					fi = new FileReader(filename);
+				} catch (FileNotFoundException e3) {
+					// TODO Auto-generated catch block
+					e3.printStackTrace();
+				}
+    			BufferedReader in=new BufferedReader(fi);
+    			try {
+    				GamePanel.CARCOUNT=Integer.valueOf(in.readLine()).intValue();
+    			} catch (IOException e1) {
+    				// TODO Auto-generated catch block
+    				e1.printStackTrace();
+    			}
+    			char tem;
+    			for(int i=0;i<6;i++){
+    				for(int j=0;j<6;j++){
+    					try {
+    						GamePanel.testmap[i][j]=(char) in.read();
+    					} catch (IOException e1) {
+    						// TODO Auto-generated catch block
+    						e1.printStackTrace();
+    					}
+    					try {
+							tem=(char) in.read();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+    				}
+    			}
+    			//System.out.println(GamePanel.CARCOUNT);
+    			for(int i=0;i<6;i++){
+    				for(int j=0;j<6;j++){
+    					System.out.print(GamePanel.testmap[i][j]+" ");
+    				}
+    				System.out.println("");
+    			}
+    			GamePanel.loadFileMap(GamePanel.testmap);
+    			MainFrame.carpark.repaint();
+    		}    
+        });  
 	}
 	
 	public static void main(String[] args) {
@@ -376,7 +427,6 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			btnPause.setEnabled(true);
 			gamestarted = true;
 			gamepaused  = false;
-			
 		}
 		else if(obj == "Pause Game"){
 			System.out.println("Pause pressed.");
@@ -384,8 +434,7 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			btnStart.setEnabled(true);
 			gamestarted = true;
 			gamepaused = true;
-			
 		}
 	}
-
+	
 }
