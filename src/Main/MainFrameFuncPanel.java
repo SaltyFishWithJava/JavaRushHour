@@ -1,22 +1,25 @@
 package Main;
-import Abstractions.MapFile;
 
+import Abstractions.*;
+import Abstractions.Action;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Scanner;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import javax.swing.*;
-
-import Abstractions.MapFile;
 
 public class MainFrameFuncPanel extends JPanel implements ActionListener{
 	public boolean gamestarted;
 	public boolean gamepaused;
 	public JButton btnStart;
 	public JButton btnPause;
-	//
+	
+	private Solver s;
+	private Stack<Action> prevstep;
 	
 	private JLabel labelmaps;
 	private JLabel labelcontrols;
@@ -70,15 +73,15 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 	private Component verticalStrut_10;
 	private JSeparator separator_2;
 	private Component verticalStrut_11;
-	private JLabel labelGame;
 	private Box horizontalBox_8;
 	private Component horizontalGlue_11;
-	private Component horizontalGlue_12;
 	private Component verticalStrut_12;
 	private JSeparator separator_3;
 	private Component verticalStrut_13;
 	private Component verticalStrut_14;
 	private JSlider slider;
+	private JButton btnSavegame;
+	private Component horizontalGlue_9;
 	
 	public MainFrameFuncPanel(){
 		gamestarted = false;
@@ -94,14 +97,6 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		horizontalBox_8 = Box.createHorizontalBox();
 		verticalBox.add(horizontalBox_8);
 		
-		labelGame = new JLabel("Game:");
-		horizontalBox_8.add(labelGame);
-		labelGame.setFont(new Font("Calibri", Font.BOLD, 16));
-		labelGame.setToolTipText("Basic game controlls.");
-		
-		horizontalGlue_12 = Box.createHorizontalGlue();
-		horizontalBox_8.add(horizontalGlue_12);
-		
 		btnStart = new JButton("Start Game");
 		btnStart.setToolTipText("Timer will be started.");
 		btnStart.setFont(new Font("Calibri", Font.PLAIN, 12));
@@ -115,6 +110,14 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		btnPause.setFont(new Font("Calibri", Font.PLAIN, 12));
 		btnPause.setToolTipText("Timer will be paused.");
 		horizontalBox_8.add(btnPause);
+		
+		horizontalGlue_9 = Box.createHorizontalGlue();
+		horizontalBox_8.add(horizontalGlue_9);
+		
+		btnSavegame = new JButton("Save Game");
+		btnSavegame.setFont(new Font("Calibri", Font.PLAIN, 12));
+		btnSavegame.setToolTipText("Current game process will be saved.");
+		horizontalBox_8.add(btnSavegame);
 		
 		verticalStrut_12 = Box.createVerticalStrut(10);
 		verticalBox.add(verticalStrut_12);
@@ -249,7 +252,6 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		verticalBox.add(horizontalBox_2);
 		btnSolve = new JButton("Solve Current Map");
 		btnSolve.setFont(new Font("Calibri", Font.PLAIN, 12));
-		btnSolve.setEnabled(false);
 		horizontalBox_2.add(btnSolve);
 		
 		horizontalGlue_4 = Box.createHorizontalGlue();
@@ -301,14 +303,18 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		textPane.setEditable(false);
 		verticalBox.add(textPane);
 		
+		//Add ActionListeners to various components.
 		btnCreateMap.addActionListener(this);
 		btnLoadMap.addActionListener(this);
 		btnStart.addActionListener(this);
 		btnPause.addActionListener(this);
+		btnSolve.addActionListener(this);
+		btnAutomove.addActionListener(this);
 		ButtonGroup rbalgorithm= new ButtonGroup();
 		rbalgorithm.add(rdbtnA);
 		rbalgorithm.add(rdbtnBFS);
 		rbalgorithm.add(rdbtnDFS);
+		
 		
 		//Functions
 		loadMaps();
@@ -326,6 +332,8 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		comboBoxMaps.addItemListener(new ItemListener() {  
             @Override  
             public void itemStateChanged(ItemEvent e) {
+            	btnAutomove.setEnabled(false);
+            	
             	MapFile te=(MapFile) comboBoxMaps.getSelectedItem();
             	System.out.println(((MapFile) comboBoxMaps.getSelectedItem()).getMapName());
     			String filename=((MapFile) comboBoxMaps.getSelectedItem()).getMapName();
@@ -375,10 +383,28 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		//For test purpose.
 		MainFrame test = new MainFrame();
 		
 	}
 
+	public void pushStepToStack(Action step){
+		prevstep.push(step);
+		//
+		//
+		//
+		//
+		//
+		//这里是用来把GamePanel里产生的步骤 传给这个prevstep的
+		//
+		//
+		//
+		//
+		//
+		//
+		btnPrevStep.setEnabled(true);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -403,23 +429,32 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		}
 		else if(obj == "Prev Step"){
 			System.out.println("Prevstep pressed");
+			Action a = prevstep.peek();
+			a.toPrevStep();
+			System.out.println(a.toString());
+			//!!!!!!!!!!!!!!!!
+			//传输给GamePanel做步骤处理
+			//语法也是{A,3}这样的
 			//
 			//
 			//
 			//
+			//
+			//
+			//
+			//
+			//
+			
+			prevstep.pop();
+			if(prevstep.empty()) btnPrevStep.setEnabled(false);
 		}
 		else if (obj == "Solve Current Map") {
 			System.out.println("Solve pressed");
-			//
-			//
-			//
+			new SolverThread().start();
 		}
 		else if(obj == "Auto Move"){
 			System.out.println("Auto Move pressed");
-			//
-			//
-			//
-			//
+			new ShowThread().start();
 		}
 		else if(obj == "Start Game"){
 			System.out.println("Start pressed.");
@@ -434,6 +469,103 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			btnStart.setEnabled(true);
 			gamestarted = true;
 			gamepaused = true;
+		}
+	}
+	
+	private class SolverThread extends Thread {
+
+		public void run() {
+			btnSolve.setEnabled(false);
+			btnAutomove.setEnabled(false);
+			comboBoxMaps.setEnabled(false);
+			rdbtnA.setEnabled(false);
+			rdbtnBFS.setEnabled(false);
+			rdbtnDFS.setEnabled(false);
+			
+			MapFile mFile= (MapFile)comboBoxMaps.getSelectedItem();
+			Scanner in = null;
+			try {
+				in = new Scanner(mFile.file());
+			} catch (FileNotFoundException e1) {}
+
+			in.next();
+			char[][] blocks = new char[6][6];
+			for (int i = 0; i < 6; i++)
+				for (int j = 0; j < 6; j++)
+					blocks[i][j] = in.next().charAt(0);
+
+			Board initial = new Board(blocks);
+			
+			if (rdbtnA.isSelected())
+				s = new AStarSolver(initial);
+			else if (rdbtnBFS.isSelected())
+				s = new BFSSolver(initial);
+			else if (rdbtnDFS.isSelected())
+				s = new DFSSolver(initial);
+			else {
+				JOptionPane.showMessageDialog(null,
+						"You should select an algorithm.");
+				
+				btnSolve.setEnabled(true);
+				btnAutomove.setEnabled(true);
+				comboBoxMaps.setEnabled(true);
+				rdbtnA.setEnabled(true);
+				rdbtnBFS.setEnabled(true);
+				rdbtnDFS.setEnabled(true);
+				return;
+			}
+			
+			//For testing purpose.
+			System.out.println("Number of Moves: " + s.moves());
+			System.out.println("Number of Expanded Nodes " + s.expandedNodes());
+			System.out.println("Running time: " + s.getRunningTime());
+			
+			btnSolve.setEnabled(true);
+			btnAutomove.setEnabled(true);
+			comboBoxMaps.setEnabled(true);
+			rdbtnA.setEnabled(true);
+			rdbtnBFS.setEnabled(true);
+			rdbtnDFS.setEnabled(true);
+		}
+	}
+	
+	
+	private class ShowThread extends Thread {
+
+		public void run() {
+			btnSolve.setEnabled(false);
+			btnAutomove.setEnabled(false);
+			comboBoxMaps.setEnabled(false);
+			rdbtnA.setEnabled(false);
+			rdbtnBFS.setEnabled(false);
+			rdbtnDFS.setEnabled(false);
+			
+			if (s.isSolvable())
+				for (Action a : s.solution()) {
+					System.out.println(a.toString());
+					//!!!!!!!!!!!!!!!!!!111
+					//大老板这里是那种步骤出现的地方{A,3}
+					//
+					//
+					//
+					//
+					//
+					//
+					//
+					//
+					//
+				}
+			else
+				JOptionPane.showMessageDialog(null,
+						"The board you selected has no solution.");
+			btnSolve.setEnabled(true);
+			btnAutomove.setEnabled(true);
+			comboBoxMaps.setEnabled(true);
+			rdbtnA.setEnabled(true);
+			rdbtnBFS.setEnabled(true);
+			rdbtnDFS.setEnabled(true);
+			
+
 		}
 	}
 	

@@ -93,7 +93,7 @@ public class MainFrame extends JFrame{
         }, 1000, 1000);  
     }
 	
-	//≤‚ ‘”√
+	//For testing purpose. Not the entrance of this application.
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MainFrame mf = new MainFrame();

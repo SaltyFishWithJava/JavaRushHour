@@ -31,10 +31,10 @@ public class Action {
 		return moves;
 	}
 	
-	/**
-	 *  Get the block expressed as a String
-	 *  @return The String representing the block
-	 */
+	public void toPrevStep(){
+		moves = -moves;
+	}
+	
 	public String toString() {
 		return "{" + block + ", " + moves + "}";
 	}

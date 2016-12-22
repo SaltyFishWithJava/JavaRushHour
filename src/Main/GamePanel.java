@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import javax.swing.*;
 import java.io.*;
 //Maps and cars are shown here. it should be placed at BorderLayout.CENTER in MainFrame
-
+//For Drawing purposes. Solving Board are located in Abstractions.Board.
 public class GamePanel extends JPanel {
 	final private int INITX = 165, INITY = 80;
 	private int[][] park = { { 0, 1, 0, 1, 0, 1 }, { 1, 0, 1, 0, 1, 0 }, { 0, 1, 0, 1, 0, 1 }, { 1, 0, 1, 0, 1, 0 },
@@ -135,10 +135,10 @@ public class GamePanel extends JPanel {
 			for(int w=sx;w<=ex;w++){
 				for(int j=sy;j<=ey;j++){
 					if(ca[w][j]!=-1){
-						System.out.println(Cars.allcar[ca[w][j]].co);
+						//System.out.println(Cars.allcar[ca[w][j]].co);
 						if(arr[Cars.allcar[ca[w][j]].co]==0){
 							fsort[now.co][++fsort[now.co][0]]=Cars.allcar[ca[w][j]].co;
-							System.out.println(fsort[now.co][0]);
+							//System.out.println(fsort[now.co][0]);
 							deco[Cars.allcar[ca[w][j]].co]++;
 							arr[Cars.allcar[ca[w][j]].co]=1;
 						}
