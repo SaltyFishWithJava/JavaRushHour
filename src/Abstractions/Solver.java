@@ -3,6 +3,9 @@ package Abstractions;
 import DataStructure.Stack;
 
 //An abstract class, the implementation will be given in the actual solver of different algorithms.
+//
+//2016/12/22
+
 public abstract class Solver {
 	protected boolean solvable;
 	protected int moves = -1;

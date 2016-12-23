@@ -82,6 +82,8 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 	private JSlider slider;
 	private JButton btnSavegame;
 	private Component horizontalGlue_9;
+	private JButton btnReplay;
+	private Component horizontalGlue_10;
 	
 	public MainFrameFuncPanel(){
 		gamestarted = false;
@@ -250,12 +252,22 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 		
 		horizontalBox_2 = Box.createHorizontalBox();
 		verticalBox.add(horizontalBox_2);
-		btnSolve = new JButton("Solve Current Map");
+		btnSolve = new JButton("Solve Map");
+		btnSolve.setToolTipText("Application will give solutions to the current map.");
 		btnSolve.setFont(new Font("Calibri", Font.PLAIN, 12));
 		horizontalBox_2.add(btnSolve);
 		
 		horizontalGlue_4 = Box.createHorizontalGlue();
 		horizontalBox_2.add(horizontalGlue_4);
+		
+		btnReplay = new JButton("Replay");
+		btnReplay.setEnabled(false);
+		btnReplay.setToolTipText("Replay how you solve the map.");
+		btnReplay.setFont(new Font("Calibri", Font.PLAIN, 12));
+		horizontalBox_2.add(btnReplay);
+		
+		horizontalGlue_10 = Box.createHorizontalGlue();
+		horizontalBox_2.add(horizontalGlue_10);
 		btnAutomove = new JButton("Auto Move");
 		btnAutomove.setFont(new Font("Calibri", Font.PLAIN, 12));
 		btnAutomove.setEnabled(false);
@@ -460,6 +472,12 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			System.out.println("Start pressed.");
 			btnStart.setEnabled(false);
 			btnPause.setEnabled(true);
+			btnSavegame.setEnabled(false);
+			rdbtnA.setEnabled(false);
+			rdbtnBFS.setEnabled(false);
+			rdbtnDFS.setEnabled(false);
+			btnSolve.setEnabled(false);
+			btnAutomove.setEnabled(false);
 			gamestarted = true;
 			gamepaused  = false;
 		}
@@ -467,6 +485,12 @@ public class MainFrameFuncPanel extends JPanel implements ActionListener{
 			System.out.println("Pause pressed.");
 			btnPause.setEnabled(false);
 			btnStart.setEnabled(true);
+			btnSavegame.setEnabled(true);
+			rdbtnA.setEnabled(true);
+			rdbtnBFS.setEnabled(true);
+			rdbtnDFS.setEnabled(true);
+			btnSolve.setEnabled(true);
+			btnAutomove.setEnabled(true);
 			gamestarted = true;
 			gamepaused = true;
 		}

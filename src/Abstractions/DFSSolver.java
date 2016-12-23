@@ -20,12 +20,7 @@ public class DFSSolver extends Solver{
 	   	}
 	}
 			
-	/**
-	 *  Find the solution of the initial board using the DFS algorithm.
-	 * @param initial		The Board to be solved
-	 */
 	public DFSSolver(Board initial) {
-    	// find a solution to the initial board (using the DFS algorithm)
     	Stack<SearchNode> stack = new Stack<SearchNode>();
     	ArrayList<Board> explored = new ArrayList<Board>();
 
@@ -90,6 +85,7 @@ public class DFSSolver extends Solver{
 	}
 	
 	public static void main(String[] args) {
+    	//For test purposes.
 		File file = new File("Advanced-02.puzzle");
 		
 		long startMili=System.currentTimeMillis();

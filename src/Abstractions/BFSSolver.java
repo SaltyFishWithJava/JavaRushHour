@@ -19,10 +19,6 @@ public class BFSSolver extends Solver{
 	   	}
 	}
 			 
-	/**
-	 *  Find the solution of the initial board using the BFS algorithm.
-	 * @param initial		The Board to be solved
-	 */
 	public BFSSolver(Board initial) {
     	Queue<SearchNode> queue = new Queue<SearchNode>();
     	ArrayList<Board> explored = new ArrayList<Board>();
@@ -89,9 +85,6 @@ public class BFSSolver extends Solver{
 		 //For test purposes.
 		File file = new File("Advanced-02.puzzle");
 
-		long startMili=System.currentTimeMillis();
-		System.out.println("寮�濮� "+startMili);
-		
 		Scanner in = null;
 		try {
 			in = new Scanner(file);
@@ -114,8 +107,6 @@ public class BFSSolver extends Solver{
         BFSSolver solver = new BFSSolver(initial);
 
         long endMili=System.currentTimeMillis();
-		System.out.println("缁撴潫 "+endMili);
-		System.out.println("BFS-Solver"+(endMili-startMili)+"milliseconds");
         
         // print solution to standard output
         System.out.println("Minimum number of moves = " + solver.moves());

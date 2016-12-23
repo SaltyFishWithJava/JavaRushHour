@@ -29,10 +29,6 @@ public class AStarSolver extends Solver{
 		}
     }
 	
-	/**
-	 *  Find the solution of the initial board using the A* algorithm.	 *
-	 * @param initial		The Board to be solved
-	 */
 	public AStarSolver(Board initial) {
     	MinPQ<SearchNode> pq = new MinPQ<SearchNode>();
     	ArrayList<Board> explored = new ArrayList<Board>();
@@ -95,12 +91,10 @@ public class AStarSolver extends Solver{
 	}
 	
 	public static void main(String[] args) {
+    	 //For test purposes.
 		 // create initial board from file
 		File file = new File("Advanced-02.puzzle");
-		
-		long startMili=System.currentTimeMillis();
-		System.out.println("Start time:  "+startMili);
-		
+			
 		Scanner in = null;
 		try {
 			in = new Scanner(file);
@@ -122,10 +116,6 @@ public class AStarSolver extends Solver{
         // solve the puzzle
         AStarSolver solver = new AStarSolver(initial);
 
-        long endMili=System.currentTimeMillis();
-		System.out.println("End time: "+endMili);
-		System.out.println("A*-Solver: "+(endMili-startMili)+"ms");
-        
         // print solution to standard output       
         System.out.println("Minimum number of moves = " + solver.moves());
         
