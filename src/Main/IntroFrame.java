@@ -40,7 +40,7 @@ public class IntroFrame extends JFrame implements ActionListener{
 		setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		
 		labelusername = new JLabel("Username:");
-		labelusername.setFont(new Font("Calibri", Font.PLAIN, 12));
+		labelusername.setFont(new Font("Calibri", Font.BOLD, 12));
 	    textFieldusername = new JTextField(10);
 	    textFieldusername.setMaximumSize(textFieldusername.getPreferredSize());
 
@@ -53,7 +53,7 @@ public class IntroFrame extends JFrame implements ActionListener{
 	    // construct the middle horizontal box
 
 	    labelpsw = new JLabel("Password: ");
-	    labelpsw.setFont(new Font("Calibri", Font.PLAIN, 12));
+	    labelpsw.setFont(new Font("Calibri", Font.BOLD, 12));
 	    textFieldpsw = new JPasswordField(10);
 	    textFieldpsw.setMaximumSize(textFieldpsw.getPreferredSize());
 
@@ -67,7 +67,7 @@ public class IntroFrame extends JFrame implements ActionListener{
 	    // construct the bottom horizontal box
 
 	    btnlogin = new JButton("Login");
-	    btnlogin.setFont(new Font("Calibri", Font.PLAIN, 12));
+	    btnlogin.setFont(new Font("Calibri", Font.BOLD, 12));
 	    btnregister = new JButton("New user? Register!");
 	    btnregister.setFont(new Font("Calibri", Font.PLAIN, 12));
 

@@ -1,14 +1,21 @@
 //Draw Maps, implements Listeners and checkers, repaint after every movement.
 package Main;
 
+import Abstractions.*;
+import Abstractions.Action;
+
 import java.awt.*;
 import java.util.Queue;
+import java.util.Stack;
 import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.swing.*;
+
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.io.*;
 //Maps and cars are shown here. it should be placed at BorderLayout.CENTER in MainFrame
 //For Drawing purposes. Solving Board are located in Abstractions.Board.
@@ -19,9 +26,10 @@ public class GamePanel extends JPanel {
 	private static int[][] ca = { { -1, -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1, -1 },
 			{ -1, -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1, -1 }, };
 
+	public static boolean isenabled;
 	private int[][] mapformove = new int[650][650];
 	private int cposx, cposy;
-	static public int CARCOUNT=6;
+	static public int CARCOUNT=7;
 	private static Cars[] mycars = new Cars[21];
 	static int mousex;
 	static int mousey;
@@ -31,13 +39,17 @@ public class GamePanel extends JPanel {
 	int isoverhalfx, isoverhalfy;
 	static char[][] testmap = { { 'a', 'a', 'b', 'c', '-', '-' }, { 'd', '-', 'b', 'c', '-', '-' },
 			{ 'd', 'X', 'X', 'c', '-', '-' }, { 'd', 'e', 'e', 'e', '-', '-' }, { '-', '-', '-', '-', '-', '-' },
-			{ '-', '-', '-', '-', '-', '-' }, };
-
+			{ '-', '-', '-', 'f', 'f', 'f' }, };
+	static int[] link={2,3,4,5,6,7,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
 	// CYJ 2016/12/18 changed "Iswin" "Drawpark" functions, member of the class
 	public boolean IsWin() {
 		boolean isWin = false;
 		if (ca[2][5] == 1) {
 			isWin = true;
+			Cars.allcar[1].pos[0]=2;
+			Cars.allcar[1].pos[1]=4;
+			Cars.allcar[1].movpos[0]=2;
+			Cars.allcar[1].movpos[1]=4;
 		}
 		return isWin;
 	}
@@ -50,6 +62,31 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	static public void changeTestMap(){
+		int cc=0;
+		int[] arr = new int[25];
+		for(int i=0;i<6;i++){
+			for(int j=0;j<6;j++){
+				if(ca[i][j]==-1){
+					testmap[i][j]='-';
+				}
+				if(ca[i][j]!=-1){
+					if(ca[i][j]==1){
+						testmap[i][j]='X';
+					}
+					else if(arr[ca[i][j]]==0){
+						arr[ca[i][j]]=++cc;
+						testmap[i][j]=(char) ('a'+(cc-1));
+					}
+					else{
+						testmap[i][j]=(char) ('a'+(cc-1));
+					}
+				}
+			}
+		}
+	}
+	
+	
 	private void DrawPark(Graphics g) {
 		IsWin();
 		g.clearRect(0, 0, this.getWidth(), getHeight());
@@ -70,6 +107,9 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
+
+		//if(MainFrameFuncPanel.isReplay)
+	    // 	reply();
 		if (SortCars() == true) {
 			InitMoveMap();
 			for (int i = 0; i < CARCOUNT; i++) {
@@ -191,9 +231,79 @@ public class GamePanel extends JPanel {
 		}
 	};
 
+	/*
+	private void reply(){
+		MainFrameFuncPanel.replay = new Stack<Action>();
+		while(!MainFrameFuncPanel.prevstep.empty()){
+			MainFrameFuncPanel.replay.push(MainFrameFuncPanel.prevstep.peek());
+			Action a = MainFrameFuncPanel.prevstep.peek();
+			a.toPrevStep();
+			MainFrame.carpark.MoveCar(a);
+			System.out.println(a.toString());
+			MainFrameFuncPanel.prevstep.pop();
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		while(!MainFrameFuncPanel.replay.empty()){
+			Action a = MainFrameFuncPanel.replay.peek();
+			a.toPrevStep();
+			System.out.println(a.toString());
+			
+			MainFrame.carpark.MoveCar(a);
+		//	try {
+	//			Thread.sleep(1000);
+		//	} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+	//			e1.printStackTrace();
+	//		}
+			MainFrameFuncPanel.replay.pop();
+			MainFrameFuncPanel.prevstep.push(a);
+		}
+		MainFrameFuncPanel.isReplay=false;
+	}
+	*/
 	//////////////////////////////////////////////////////////
 	// functions for car_movement
-
+	public void MoveCar(Action a){
+		if(a.getBlock()!='?'){
+		int index=0;
+		if(a.getBlock()=='X'){
+			index=CARCOUNT-1;
+		}
+		else{
+			index=(int)(a.getBlock()-'a');
+		}
+		System.out.println(a.getBlock()+","+a.getMoves());
+		Cars ne=Cars.allcar[link[index]];
+		System.out.println(ne.pos[0]+","+ne.pos[1]);
+		if(ne.dir==Cars.dirR){
+			ne.pos[1]+=a.getMoves();
+			ne.movpos[1]=ne.pos[1];
+		}
+		else{
+			ne.pos[0]+=a.getMoves();
+			ne.movpos[0]=ne.pos[0];
+		}
+		System.out.println(ne.pos[0]+","+ne.pos[1]);
+		ne.DrawTheCar();
+		}
+		InitCa();
+		for (int i = 1; i <= Cars.count; i++) {
+			ChangeArrayCa(Cars.allcar[i]);
+		}
+		for(int i=0;i<6;i++){
+			for(int j=0;j<6;j++){
+				System.out.print(ca[i][j]+" ");
+			}
+			System.out.println("");
+		}
+		//if(!MainFrameFuncPanel.isReplay)
+		    repaint();
+	}
 	static void loadFileMap(char[][] filemap) {
 		Cars.count=0;
 		Cars.cC2=0;
@@ -201,6 +311,7 @@ public class GamePanel extends JPanel {
 		Cars.cC3=0;
 		Cars.cR3=0;
 		InitCa();
+		System.out.println(CARCOUNT);
 		int[][] isarr = new int[6][6];
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 6; j++) {
@@ -208,6 +319,7 @@ public class GamePanel extends JPanel {
 					isarr[i][j] = 1;
 					isarr[i][j + 1] = 1;
 					AddCar(new Cars(2, Cars.dirR, i, j));
+					link[CARCOUNT-1]=1;
 					break;
 				}
 			}
@@ -221,8 +333,10 @@ public class GamePanel extends JPanel {
 						if (j + 2 < 6 && filemap[i][j + 2] == filemap[i][j]) {
 							isarr[i][j + 2] = 1;
 							AddCar(new Cars(3, Cars.dirR, i, j));
+							link[(int)(filemap[i][j]-'a')]=Cars.count;
 						} else {
 							AddCar(new Cars(2, Cars.dirR, i, j));
+							link[(int)(filemap[i][j]-'a')]=Cars.count;
 						}
 					} else if (i + 1 < 6 && filemap[i][j] == filemap[i + 1][j]) {
 						isarr[i + 1][j] = 1;
@@ -230,12 +344,20 @@ public class GamePanel extends JPanel {
 						if (i + 2 < 6 && filemap[i + 2][j] == filemap[i][j]) {
 							isarr[i + 2][j] = 1;
 							AddCar(new Cars(3, Cars.dirC, i, j));
+							link[(int)(filemap[i][j]-'a')]=Cars.count;
 						} else {
 							AddCar(new Cars(2, Cars.dirC, i, j));
+							link[(int)(filemap[i][j]-'a')]=Cars.count;
 						}
 					}
 				}
 			}
+		}
+		for(int i=0;i<6;i++){
+			for(int j=0;j<6;j++){
+				System.out.print(filemap[i][j]+" ");
+			}
+			System.out.println("");
 		}
 	}
 
@@ -271,6 +393,7 @@ public class GamePanel extends JPanel {
 
 	class InnerClassMouseListener extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
+			if(!isenabled)return; 
 			if (e.getX() < 650 && e.getY() < 650) {
 				movingcar = mapformove[e.getX()][e.getY()];
 			}
@@ -315,6 +438,7 @@ public class GamePanel extends JPanel {
 		}
 
 		public void mouseReleased(MouseEvent e) {
+			if(!isenabled) return;
 			if (movingcar > 0) {
 				Cars.allcar[movingcar].movpos[0] += isoverhalfx;
 				Cars.allcar[movingcar].movpos[1] += isoverhalfy;
@@ -322,7 +446,28 @@ public class GamePanel extends JPanel {
 				Cars.allcar[movingcar].pos[1] = Cars.allcar[movingcar].movpos[1];
 				Cars.allcar[movingcar].movlength = Cars.allcar[movingcar].length;
 				Cars.allcar[movingcar].DrawTheCar();
-
+				InitCa();
+				for (int i = 1; i <= Cars.count; i++) {
+					ChangeArrayCa(Cars.allcar[i]);
+				}
+				char tt=' ';
+				for(int i=0;i<CARCOUNT;i++){
+					if(link[i]==movingcar){
+						tt=(char) ('a'+i);
+						if(i==CARCOUNT-1){
+							tt='X';
+						}
+					}
+				}
+				if(Cars.allcar[movingcar].dir==Cars.dirC){
+					MainFrameFuncPanel.pushStepToStack(new Action(tt,Cars.allcar[movingcar].pos[0]-cposx));
+					System.out.println(Cars.allcar[movingcar].pos[0]+","+Cars.allcar[movingcar].pos[1]);
+				}
+				else{
+					MainFrameFuncPanel.pushStepToStack(new Action(tt,Cars.allcar[movingcar].pos[1]-cposy));
+					System.out.println(Cars.allcar[movingcar].pos[0]+","+Cars.allcar[movingcar].pos[1]);
+				}
+				
 				repaint();
 			}
 		}
@@ -330,6 +475,7 @@ public class GamePanel extends JPanel {
 
 	class InnerClassMouseListener2 extends MouseMotionAdapter {
 		public void mouseDragged(MouseEvent e) {
+			if(!isenabled)return;
 			if (movingcar > 0) {
 				Cars moving = Cars.allcar[movingcar];
 				double cx = 0, cy = 0;
@@ -436,14 +582,6 @@ public class GamePanel extends JPanel {
 				repaint();
 			}
 		}
-	}
-
-	class InnerClassWindowListener extends WindowAdapter {
-
-	}
-
-	class InnerClassKeyListener extends KeyAdapter {
-
 	}
 
 	public void paintComponent(Graphics g) {

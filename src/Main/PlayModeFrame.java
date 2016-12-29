@@ -44,13 +44,13 @@ public class PlayModeFrame extends JFrame implements ActionListener{
 	    hboxplaymode.add(horizontalGlue);
 	    
 	    btnsingleplay = new JButton("Single-Player");
-	    btnsingleplay.setFont(new Font("Calibri", Font.PLAIN, 12));
+	    btnsingleplay.setFont(new Font("Calibri", Font.BOLD, 14));
 	    hboxplaymode.add(btnsingleplay);
 	    
 	    horizontalGlue_2 = Box.createHorizontalGlue();
 	    hboxplaymode.add(horizontalGlue_2);
 	    btnmultiplay = new JButton("Multi-Player");
-	    btnmultiplay.setFont(new Font("Calibri", Font.PLAIN, 12));
+	    btnmultiplay.setFont(new Font("Calibri", Font.BOLD, 14));
 	    hboxplaymode.add(btnmultiplay);
 	    
 	    contentpane.add(hboxplaymode, BorderLayout.CENTER);
@@ -89,15 +89,14 @@ public class PlayModeFrame extends JFrame implements ActionListener{
 		Object obj = e.getActionCommand();
 		if(obj == "Single-Player"){
 			System.out.println("Single-Player Pressed");
-			//
-			//
-			//
 			this.setVisible(false);
 			//this.dispose();
 			MainFrame mf = new MainFrame();
 		}
 		else if(obj == "Multi-Player"){
 			System.out.println("Multi-Player Pressed");
+			this.setVisible(false);
+			MultiFrame mf = new MultiFrame();
 		}
 	}
 

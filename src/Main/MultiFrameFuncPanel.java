@@ -8,22 +8,28 @@ import javax.swing.*;
 
 import Abstractions.Action;
 import Abstractions.MapFile;
+import Abstractions.Server;
 import Abstractions.Solver;
+import Abstractions.User;
+
 
 public class MultiFrameFuncPanel extends JPanel implements ActionListener{
-	public boolean gamestarted;
-	public boolean gamepaused;
-	public JButton btnStart;
+	public static boolean gamestarted;
+	public static boolean gamepaused;
+	public static JButton btnStart;
 	public MiniMap mp;
+	private static RoomFrame rf;
+	private User currentuser;
 	
 	private Solver s;
-	private Stack<Action> prevstep;
+	private static Stack<Action> prevstep;
+	private static Stack<Action> opprevstep;
 	
 	private JLabel labelmaps;
 	private JLabel labelcontrols;
-	private JButton btnCreateMap;
-	private JButton btnLoadMap;
-	private JComboBox<MapFile> comboBoxMaps;
+	public static JButton btnCreateMap;
+	public static JButton btnLoadMap;
+	public static JComboBox<MapFile> comboBoxMaps;
 	private JButton btnPrevStep;
 	private Box horizontalBox;
 	private Box verticalBox;
@@ -34,7 +40,6 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 	private Box horizontalBox_3;
 	private Component verticalStrut_2;
 	private Box horizontalBox_4;
-	private Component horizontalGlue;
 	private Component horizontalGlue_1;
 	private Component horizontalGlue_2;
 	private Component verticalStrut_3;
@@ -59,11 +64,16 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 	private JLabel lbOpponentStep;
 	private JLabel lblVS;
 	private Component verticalStrut_5;
-	private JButton btnPause;
+	public static JButton btnPause;
 	private Component horizontalGlue_4;
 	private Component verticalStrut_6;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private Component horizontalStrut;
+	private Component horizontalStrut_1;
 	
-	public MultiFrameFuncPanel(){
+	public MultiFrameFuncPanel(JFrame m){
+		
 		gamestarted = false;
 		gamepaused = true;
 		//Layouts and Listeners
@@ -77,6 +87,7 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		verticalBox.add(horizontalBox_8);
 		
 		btnStart = new JButton("Start Game");
+		btnStart.setEnabled(false);
 		btnStart.setToolTipText("Timer will be started.");
 		btnStart.setFont(new Font("Calibri", Font.PLAIN, 12));
 		horizontalBox_8.add(btnStart);
@@ -85,6 +96,7 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		horizontalBox_8.add(horizontalGlue_4);
 		
 		btnPause = new JButton("Pause Game");
+		btnPause.setEnabled(false);
 		btnPause.setFont(new Font("Calibri", Font.PLAIN, 12));
 		horizontalBox_8.add(btnPause);
 		
@@ -113,6 +125,7 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		verticalBox.add(horizontalBox);
 		
 		btnCreateMap = new JButton("Create Map");
+		btnCreateMap.setEnabled(false);
 		btnCreateMap.setFont(new Font("Calibri", Font.PLAIN, 12));
 		btnCreateMap.setToolTipText("Start MapCreator");
 		horizontalBox.add(btnCreateMap);
@@ -120,6 +133,7 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		horizontalGlue_2 = Box.createHorizontalGlue();
 		horizontalBox.add(horizontalGlue_2);
 		btnLoadMap = new JButton("Load Maps From Files");
+		btnLoadMap.setEnabled(false);
 		btnLoadMap.setFont(new Font("Calibri", Font.PLAIN, 12));
 		btnLoadMap.setToolTipText("Load maps from file.");
 		horizontalBox.add(btnLoadMap);
@@ -128,6 +142,7 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		verticalBox.add(verticalStrut);
 		
 		comboBoxMaps = new JComboBox();
+		comboBoxMaps.setEnabled(false);
 		comboBoxMaps.setToolTipText("Files with *puzzles will be shown here.");
 		verticalBox.add(comboBoxMaps);
 	
@@ -144,8 +159,19 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		horizontalBox_4.add(labelcontrols);
 		labelcontrols.setFont(new Font("Calibri", Font.BOLD, 16));
 		
-		horizontalGlue = Box.createHorizontalGlue();
-		horizontalBox_4.add(horizontalGlue);
+		horizontalStrut = Box.createHorizontalStrut(80);
+		horizontalBox_4.add(horizontalStrut);
+		
+		lblNewLabel = new JLabel("Yours");
+		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 12));
+		horizontalBox_4.add(lblNewLabel);
+		
+		horizontalStrut_1 = Box.createHorizontalStrut(35);
+		horizontalBox_4.add(horizontalStrut_1);
+		
+		lblNewLabel_1 = new JLabel("Opponent's");
+		lblNewLabel_1.setFont(new Font("Calibri", Font.PLAIN, 12));
+		horizontalBox_4.add(lblNewLabel_1);
 		
 		verticalStrut_3 = Box.createVerticalStrut(5);
 		verticalBox.add(verticalStrut_3);
@@ -222,19 +248,63 @@ public class MultiFrameFuncPanel extends JPanel implements ActionListener{
 		btnLoadMap.addActionListener(this);
 		btnStart.addActionListener(this);
 		
-		
+		this.setEnabled(false);
 		//Functions
-		
+		rf = new RoomFrame();
+		rf.setAlwaysOnTop(true);
 	}
+	
+	public void closing(){
+		rf.closing();
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//For testing purposes.
 		MultiFrame mf = new MultiFrame();
+		//rf.sendMessage();
 	}
+	
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		Object obj = e.getActionCommand();
+		if(obj == "Create Map"){
+			System.out.println("Create Map Pressed");
+			//
+			//
+		}
+		else if(obj == "Load Maps From Files"){
+			System.out.println("Map files pressed");
+			//
+			//
+			//
+		}
+		else if(obj == "Prev Step"){
+			System.out.println("Prevstep pressed");
+			Action a = prevstep.peek();
+			a.toPrevStep();
+			System.out.println(a.toString());
+			//
+			prevstep.pop();
+			if(prevstep.empty()) btnPrevStep.setEnabled(false);
+		}
+		else if(obj == "Start Game"){
+			System.out.println("Start pressed.");
+			Server.send("START");
+			btnStart.setEnabled(false);
+			GamePanel.isenabled = true;
+			//btnPause.setEnabled(true);
+			gamestarted = true;
+			gamepaused  = false;
+		}
+		else if(obj == "Pause Game"){
+			System.out.println("Pause pressed.");
+			btnPause.setEnabled(false);
+			btnStart.setEnabled(true);
+			gamestarted = true;
+			gamepaused = true;
+		}
 	}
 
 }

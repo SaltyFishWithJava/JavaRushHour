@@ -12,15 +12,21 @@ import java.util.regex.Pattern;
 
 public class UtilPanel extends JPanel implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static String info;
 	private JPanel jpInfo;
-	private JLabel jlInfo;
+	private static JLabel jlInfo;
 	private JPanel jpButtons;
 	private JButton btnAbout;
 	private JButton btnHelp;
+	static public long ti=0;
+	static public String  te=null;
 	
 	private static final String INITIAL_LABEL_TEXT = "00:00:00 000";   
-	private String Currenttime;
+	public static String Currenttime;
     private CountingThread thread = new CountingThread();    
     private long programStart = System.currentTimeMillis();    
     private long pauseStart = programStart;    
@@ -58,6 +64,7 @@ public class UtilPanel extends JPanel implements ActionListener{
 		add(jpButtons);
 		setLayout(new GridLayout(1,2,0,0));
 		
+		//currentuser = new User("test","test","666");
 		//Users
 		loadUsers();
 		thread.start();
@@ -163,12 +170,12 @@ public class UtilPanel extends JPanel implements ActionListener{
 		return result;
 	}
 	
-	public User getcurrentuser(){
+	public static User getcurrentuser(){
 		return currentuser;
 	}
 	
 	//功能栏信息改变
-	public void infoChange(String s){
+	public static void infoChange(String s){
 		info = s;
 		jlInfo.setText(s);
 	}
@@ -203,7 +210,7 @@ public class UtilPanel extends JPanel implements ActionListener{
 	private class CountingThread extends Thread {    
 	     
         public boolean stopped = true;    
-     
+        
         private CountingThread() {    
             setDaemon(true);    
         }    
@@ -214,6 +221,8 @@ public class UtilPanel extends JPanel implements ActionListener{
                 if (!stopped) {    
                     long elapsed = System.currentTimeMillis() - programStart - pauseCount;
                     jlInfo.setText(format(elapsed));
+                    ti=elapsed;
+                    te=format(elapsed);
                 }    
      
                 try {    
@@ -221,7 +230,7 @@ public class UtilPanel extends JPanel implements ActionListener{
                 } catch (InterruptedException e) {    
                     e.printStackTrace();    
                     System.exit(1);    
-                }    
+                }
             }    
         }    
      
@@ -239,7 +248,7 @@ public class UtilPanel extends JPanel implements ActionListener{
             elapsed = elapsed / 60;    
      
             hour = (int) (elapsed % 60);    
-     
+            ti=elapsed;
             //String.format("%02d:%02d:%02d %03d", hour, minute, second, milli);
             return Currenttime = String.format("%02d:%02d:%02d", hour, minute, second, milli);    
         }    

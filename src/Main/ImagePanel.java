@@ -22,8 +22,8 @@ class ImagePanel extends JPanel{
 		int panelWidth = this.getWidth();
 		int panelHeight = this.getHeight();
 		
-		System.out.println(panelWidth);
-		System.out.println(panelHeight);
+		//System.out.println(panelWidth);
+		//System.out.println(panelHeight);
 		
 		int x = (panelWidth - imageWidth)/2;
 		int y = (panelHeight - imageHeight)/2;

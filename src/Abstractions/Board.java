@@ -97,7 +97,7 @@ public class Board {
 		                        int aux = tempi - 1;
 		                	    while (aux > 0 && blocks2[aux-1][j] == value)
 		                		    aux--;
-		                	    swap(blocks2, aux, ++tempi, j, j); //move Hor
+		                	    swap(blocks2, aux, ++tempi, j, j); 
 		                	    Board b = new Board(blocks2, value, tempi - i + 1);
 		                        neighbors.push(b);
                 		    }
@@ -114,7 +114,7 @@ public class Board {
 		                        int aux = tempj - 1;
 		                        while (aux > 0 && blocks2[i][aux-1] == value)
 		                		    aux--;
-		                	    swap(blocks2, i, i, aux, ++tempj); //move Hor
+		                	    swap(blocks2, i, i, aux, ++tempj); 
 		                	    Board b = new Board(blocks2, value, tempj - j + 1);
 		                        neighbors.push(b);
                 		    }
@@ -131,7 +131,7 @@ public class Board {
 		                        int aux = tempi + 1;
 		                	    while (aux < N - 1 && blocks2[aux+1][j] == value)
 		                		    aux++;
-		                	    swap(blocks2, aux, --tempi, j, j); //move Hor
+		                	    swap(blocks2, aux, --tempi, j, j); 
 		                	    Board b = new Board(blocks2, value, tempi - i - 1);
 		                        neighbors.push(b);
                 		    }
@@ -147,7 +147,7 @@ public class Board {
 		                        int aux = tempj + 1;
 		                	    while (aux < N - 1 && blocks2[i][aux+1] == value)
 		                		    aux++;
-		                	    swap(blocks2, i, i, aux, --tempj); //move Hor
+		                	    swap(blocks2, i, i, aux, --tempj); 
 		                	    Board b = new Board(blocks2, value, tempj -j - 1);
 		                        neighbors.push(b);
                 		    }

@@ -11,7 +11,7 @@ public class MapFile {
 		file = f;
 		String[] nameParts = f.getName().split("-");
 		name = nameParts[0] + " " +
-				Integer.parseInt(nameParts[1].substring(0,2));
+				Integer.parseInt(nameParts[1].substring(0, nameParts[1].length()-5));
 	}
 	
 	public File file() {

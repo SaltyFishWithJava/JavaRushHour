@@ -7,23 +7,26 @@ import java.util.Comparator;;
 
 public class Cars{
 
-    final private int []offsetY={42,42};
-    final private int []offsetX={30,60,2,0};//c2,c3,r2,r3
+    final public int []offsetY={42,42};
+    final public int []offsetX={30,60,2,0};//c2,c3,r2,r3
 	final static int dirC=1,dirR=0;
 	final static int maxn=21;
+    static final Cars[] MCARS = null;
 	static Cars[] allcar=new Cars[maxn];
+	static Cars[] Mallcar=new Cars[maxn];
 	public int length;//车长
 	public int movlength;//扩展车长
 	public int dir;//车的方向
 	public int id;
 	public int co;
 	static public int count = 0,cC2=0,cR2=0,cC3=0,cR3=0;
+	static public int Mco=0,McC2=0,McR2=0,McC3=0,McR3=0;
 	public int []pos={0,0};
 	public int []movpos={0,0};
 	public int []for_draw={0,0};
 	public String image_name;
 	public Cars(int le,int di,int x,int y){
-		image_name=null;
+		image_name="x";
 		length=le;
 		movlength=le;
 		dir=di;
@@ -56,18 +59,72 @@ public class Cars{
 		co=0;
 		id=0;
 	}
+	public Cars(int iid,int dirr,int le,int xx,int yy){
+		image_name="Images\\car"+le;
+		length=le;
+		movlength=le;
+		dir=dirr;
+		pos[0]=0;
+		pos[1]=0;
+		movpos[0]=0;
+		movpos[1]=0;
+		for_draw[0]=xx-40;
+		for_draw[1]=yy-40;
+		co=++Mco;
+		Mallcar[Mco]=this;
+		if(dirr==dirC&&le==2){
+			id=++McC2;
+			image_name+='c';
+			image_name+=iid;
+		}
+		else if(dirr==dirR&&le==2){
+			id=++McR2;
+			image_name+='r';
+			image_name+=iid;
+		}
+		else if(dirr==dirC&&le==3){
+			id=++McC3;
+			image_name+='c';
+			image_name+=iid;
+		}
+		else if(dirr==dirR&&le==3){
+			id=++McR3;
+			image_name+='r';
+			image_name+=iid;
+		}
+		image_name+=".png";
+		if(iid==25){
+			image_name="Images\\Red.png";
+		}
+	}
+	
+	public void ChangeDraw(int xx, int yy){
+		for_draw[0]=xx-40;
+		for_draw[1]=yy-40;
+	}
+	
 	public void DrawTheCar(){
+		if(Mco==0&&co==1){
+			image_name="Images\\Red.png";
+		}
+	    if(image_name=="x"){
 			image_name="Images\\car";
 			image_name+=length;
 			if(dir==dirC){
 				image_name+='c';
-			}
+			}																																		
 			else if(dir==dirR){
 				image_name+='r';
 			}
-			image_name+=id;
+			if(length==2){
+				image_name+=(id%8)+1;
+			}
+			else{
+				image_name+=(id%4)+1;
+			}
 			image_name+=".png";
-			GetDrawPos(movpos[0],movpos[1]);
+		}
+		GetDrawPos(movpos[0],movpos[1]);
 	}
 	
 	public void GetDrawPos(int px,int py){

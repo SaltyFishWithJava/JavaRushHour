@@ -3,6 +3,9 @@ package Main;
 
 import java.awt.*;
 import javax.swing.*;
+
+import Abstractions.User;
+
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;  
@@ -17,18 +20,23 @@ public class MainFrame extends JFrame{
 	private UtilPanel utilp;
 	public static GamePanel carpark;
 	private MainFrameFuncPanel mffp;
+	private static User currentuser;
+	public static MusicPanel ms= new MusicPanel();
 	//¹¹Ôìº¯Êý
 	public MainFrame(){
 		timer();
+		this.add(ms);
 		utilp = new UtilPanel();
 		carpark = new GamePanel();
+		carpark.isenabled = false;
 		mffp = new MainFrameFuncPanel();
 		Container contentPane = getContentPane();
 		contentPane.add(utilp, BorderLayout.SOUTH);
 		contentPane.add(carpark);
 		mffp.setPreferredSize(new Dimension(300,680));
 		contentPane.add(mffp,BorderLayout.EAST);
-		setTitle("Rush Hour!");
+		currentuser = utilp.getcurrentuser();
+    	setTitle("Rush Hour!" + "---Single Play Mode---" + "Current Player: " + currentuser.getName());
 		this.setResizable(false);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
@@ -41,7 +49,8 @@ public class MainFrame extends JFrame{
 		//System.out.println(r.getWidth() + " " + r.getHeight());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new innerClassWindowListener());
-		this.setBackground(Color.BLACK);
+		currentuser = utilp.getcurrentuser();
+		//this.setBackground(Color.BLACK);
 		setVisible(true);
 	}
 	
@@ -62,31 +71,56 @@ public class MainFrame extends JFrame{
 	public void timer() {  
         Timer timer = new Timer();  
         timer.schedule(new TimerTask() {  
-            public void run() {  
+            public void run() { 
                 if(mffp.gamestarted && !mffp.gamepaused){
                 	System.out.println("Game Starts");
                 	if(!gamestartedflag){
                 		gamestartedflag = true;
                 		gamepausedflag = false;
+                		carpark.isenabled = true;
                 		utilp.timerstart();
                 	}
                 }
                 else if(mffp.gamestarted && mffp.gamepaused){
                 	System.out.println("Game Paused");
                 	if(!gamepausedflag){
+                		UtilPanel.infoChange("Game Paused");
                 		utilp.timerstart();
+                		carpark.isenabled = false;
                 		gamepausedflag = true;
                 		gamestartedflag = false;
                 	}
                 }
+                else {
+                	//System.out.println(carpark.isEnabled());
+                	System.out.println("Game Stoped");
+                	utilp.resettimer();
+                	carpark.isenabled = false;
+                	gamepausedflag = false;
+                	gamestartedflag = false;
+                	carpark.setEnabled(false);
+                	//mffp.setEnabled(true);
+                }
                 if(carpark.IsWin()){
                 	utilp.resettimer();
+                	carpark.repaint();
+                	carpark.isenabled = false;
                 	gamepausedflag = false;
                 	gamestartedflag = false;
                 	mffp.gamestarted = false;
                 	mffp.gamepaused = false;
                 	mffp.btnStart.setEnabled(true);
                 	mffp.btnPause.setEnabled(false);
+                	mffp.btnCreateMap.setEnabled(true);
+                	mffp.btnLoadMap.setEnabled(true);
+                	mffp.btnSolve.setEnabled(true);
+                	mffp.comboBoxMaps.setEnabled(true);
+                	mffp.rdbtnA.setEnabled(true);
+                	mffp.rdbtnBFS.setEnabled(true);
+                	mffp.rdbtnDFS.setEnabled(true);
+                	mffp.Win();
+                	ms.win();
+                	//mffp.btnPrevStep.setEnabled(false);
                 }
                 
             }  
@@ -99,4 +133,3 @@ public class MainFrame extends JFrame{
 		MainFrame mf = new MainFrame();
 	}
 }
-
