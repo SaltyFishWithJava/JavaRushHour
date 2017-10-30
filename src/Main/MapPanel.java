@@ -255,12 +255,8 @@ public class MapPanel extends JPanel{
 					if(ca[i][j]==REDCAR){
 						testmap[i][j]='X';
 					}
-					else if(arr[ca[i][j]]==0){
-						arr[ca[i][j]]=++cc;
-						testmap[i][j]=(char) ('a'+(cc-1));
-					}
 					else{
-						testmap[i][j]=(char) ('a'+(cc-1));
+						testmap[i][j]=(char) ('a'+(ca[i][j]-2));
 					}
 				}
 			}
