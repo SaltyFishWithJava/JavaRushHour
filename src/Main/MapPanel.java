@@ -256,7 +256,7 @@ public class MapPanel extends JPanel{
 						testmap[i][j]='X';
 					}
 					else{
-						testmap[i][j]=(char) ('a'+(ca[i][j]-2));
+						testmap[i][j]=(char) ('a'+(ca[i][j]));
 					}
 				}
 			}
